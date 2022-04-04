@@ -14,11 +14,12 @@
     ansible.builtin.apt_key:
       state: present
       url: https://pkg.jenkins.io/debian-stable/jenkins.io.key
-
-  - name: apt update
-    apt:
-      name: '*'
-      state: latest
+  - name: APT Update
+  become: true
+  apt:
+    upgrade: yes
+    update_cache: yes
+    cache_valid_time: 86400 #One day
 
   - name: Install java
     apt:
