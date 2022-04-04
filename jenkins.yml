@@ -5,16 +5,17 @@
   become_user: root
   become_method: sudo
   tasks:
-  - name: Download Long Term Jenkins release
-    get_url:
-      url: https://pkg.jenkins.io/debian-stable/ binary
-      dest: /etc/apt/sources.list.d/jenkins.list
-
+  
   - name: Import jenkins key from url
-    ansible.builtin.apt_key:
+    apt_key:
       state: present
       url: https://pkg.jenkins.io/debian-stable/jenkins.io.key
-  
+      
+  - name: Add jenkin repository
+    apt_repository:
+      repo: 'deb http://pkg.jenkins.io/debian-stable binary/'
+      state: present
+      
   - name: APT Update
     become: true
     apt:
