@@ -11,8 +11,7 @@
       state: present
       url: https://pkg.jenkins.io/debian-stable/jenkins.io.key
       
-  - name: Add jenkin repository
-      ansible.builtin.apt_repository:
+  - apt_repository:
       repo: deb http://pkg.jenkins.io/debian-stable binary
       state: present
       
