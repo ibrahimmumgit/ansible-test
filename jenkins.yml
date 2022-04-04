@@ -7,11 +7,11 @@
   tasks:
   - name: Download Long Term Jenkins release
     get_url:
-      url: https://pkg.jenkins.io/debian-stable/jenkins.repo
-      dest: /etc/yum.repos.d/jenkins.repo
+      url: https://pkg.jenkins.io/debian-stable/
+      dest: /etc/apt/sources.list.d/jenkins.list
 
   - name: Import jenkins key from url
-    ansible.builtin.rpm_key:
+    ansible.builtin.apt_key:
       state: present
       key: https://pkg.jenkins.io/debian-stable/jenkins.io.key
 
