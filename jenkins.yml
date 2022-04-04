@@ -13,7 +13,7 @@
   - name: Import jenkins key from url
     ansible.builtin.apt_key:
       state: present
-      key: https://pkg.jenkins.io/debian-stable/jenkins.io.key
+      url: https://pkg.jenkins.io/debian-stable/jenkins.io.key
 
   - name: apt update
     apt:
