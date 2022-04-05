@@ -14,7 +14,7 @@
   - apt_repository:
       repo: 'deb https://pkg.jenkins.io/debian-stable binary'
       state: present
-      filename: jenkins.list
+      filename: jenkins
       
   - name: APT Update
     become: true
