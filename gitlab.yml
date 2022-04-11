@@ -4,8 +4,8 @@
   become_user: root
   become_method: sudo
   tasks:
-  - name: Install pre-reqs
-    apt:
+- name: Install pre-reqs
+  apt:
     state: present
     name:
      - curl 
