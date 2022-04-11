@@ -4,46 +4,46 @@
   become_user: root
   become_method: sudo
   tasks:
-- name: Install pre-reqs
-  apt:
-    state: present
-    name:
-     - curl 
-     - wget 
-     - openssh-server
-     - ca-certificates
-     - tzdata
-     - perl
-     - postfix
-- name: Enable Postfix service
-  become: yes
-  service:
+  - name: Install pre-reqs
+    apt:
+     state: present
+     name:
+      - curl 
+      - wget 
+      - openssh-server
+      - ca-certificates
+      - tzdata
+      - perl
+      - postfix
+ - name: Enable Postfix service
+   become: yes
+   service:
      name: postfix 
      enabled: yes
      state: started
      notify: restart_postfix
-- name: Download GitLab repository installation script
-  get_url:
+ - name: Download GitLab repository installation script
+   get_url:
         url: https://packages.gitlab.com/install/repositories/gitlab/gitlab-ee/script.deb.sh
         dest: /tmp/gitlab_install_repository.sh
-- name: Install GitLab repository.
-  command: bash /tmp/gitlab_install_repository.sh
-- name: Install GitLab
-  package:
+ - name: Install GitLab repository.
+   command: bash /tmp/gitlab_install_repository.sh
+ - name: Install GitLab
+   package:
         name: gitlab-ce
         state: present
         async: 300
         poll: 5
         disable_gpg_check: yes
-- name: Set External URL
-- name: GitLab reconfigure
-  become: yes
-  shell: /bin/gitlab-ctl reconfigure
-  notify: start_gitlab
+ - name: Set External URL
+ - name: GitLab reconfigure
+   become: yes
+   shell: /bin/gitlab-ctl reconfigure
+   notify: start_gitlab
 
-- name: Open Firewall Ports 
-  become: yes
-  firewalld: 
+ - name: Open Firewall Ports 
+   become: yes
+   firewalld: 
         permanent: true
         service: "{{ item }}"
         state: enabled
