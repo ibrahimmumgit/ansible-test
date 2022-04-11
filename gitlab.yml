@@ -27,9 +27,6 @@
     package:
         name: gitlab-ce
         state: present
-        async: 300
-        poll: 5
-        disable_gpg_check: yes
   - name: daemon-reload to pick up config changes
     ansible.builtin.systemd:
       daemon_reload: yes
