@@ -43,3 +43,7 @@
     ansible.builtin.systemd:
       name: jenkins
       state: started
+  - name: Print the jenkins initial Admin Password
+    shell: cat /var/lib/jenkins/secrets/initialAdminPassword
+    args:
+      executable: /bin/bash
