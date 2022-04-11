@@ -23,7 +23,7 @@
      state: started
      notify: restart_postfix
 - name: Download GitLab repository installation script
-      get_url:
+  get_url:
         url: https://packages.gitlab.com/install/repositories/gitlab/gitlab-ee/script.deb.sh
         dest: /tmp/gitlab_install_repository.sh
 - name: Install GitLab repository.
