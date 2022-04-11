@@ -11,10 +11,10 @@
       state: present
       url: https://pkg.jenkins.io/debian-stable/jenkins.io.key
       
-  - apt_repository:
-      repo: 'deb https://pkg.jenkins.io/debian-stable binary/'
-      state: present
-      filename: jenkins
+  - name: Add jenkin repository
+    shell: echo deb http://pkg.jenkins.io/debian-stable binary/ > /etc/apt/sources.list.d/jenkins.list
+    args:
+      executable: /bin/bash
       
   - name: APT Update
     become: true
