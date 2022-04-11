@@ -34,10 +34,10 @@
     become: yes
     become_user: root
     become_method: sudo
-      command: >
+    command: >
         gitlab-ctl reconfigure
         creates=/var/opt/gitlab/bootstrapped
-      notify: start_gitlab
+    notify: start_gitlab
 
   - name: Open Firewall Ports 
     become: yes
