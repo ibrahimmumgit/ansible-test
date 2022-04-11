@@ -31,9 +31,9 @@
     ansible.builtin.systemd:
       daemon_reload: yes
   - name: GitLab reconfigure
-      become: yes
-      become_user: root
-      become_method: sudo
+    become: yes
+    become_user: root
+    become_method: sudo
       command: >
         gitlab-ctl reconfigure
         creates=/var/opt/gitlab/bootstrapped
