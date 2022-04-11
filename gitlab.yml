@@ -17,13 +17,6 @@
       - tzdata
       - perl
       - postfix
-  - name: Enable Postfix service
-    become: yes
-    service:
-     name: postfix 
-     enabled: yes
-     state: started
-     notify: restart_postfix
   - name: Download GitLab repository installation script
     get_url:
         url: https://packages.gitlab.com/install/repositories/gitlab/gitlab-ee/script.deb.sh
@@ -37,6 +30,9 @@
         async: 300
         poll: 5
         disable_gpg_check: yes
+  - name: daemon-reload to pick up config changes
+    ansible.builtin.systemd:
+      daemon_reload: yes
   - name: GitLab reconfigure
     become: yes
     shell: /bin/gitlab-ctl reconfigure
