@@ -43,7 +43,7 @@
 
 - name: Open Firewall Ports 
   become: yes
-      firewalld: 
+  firewalld: 
         permanent: true
         service: "{{ item }}"
         state: enabled
