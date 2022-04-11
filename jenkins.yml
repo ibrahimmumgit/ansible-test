@@ -45,5 +45,9 @@
       state: started
   - name: Print the jenkins initial Admin Password
     shell: cat /var/lib/jenkins/secrets/initialAdminPassword
+    register: command_output
     args:
       executable: /bin/bash
+  - debug: 
+            var: command_output.stdout_lines
+    
