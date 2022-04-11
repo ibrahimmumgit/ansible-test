@@ -32,7 +32,8 @@
       daemon_reload: yes
   - name: GitLab reconfigure
     become: yes
-    shell: /bin/gitlab-ctl reconfigure
+    command: >
+      gitlab-ctl reconfigure
     notify: start_gitlab
 
   - name: Open Firewall Ports 
