@@ -31,11 +31,13 @@
     ansible.builtin.systemd:
       daemon_reload: yes
   - name: GitLab reconfigure
-    become: yes
-    command: >
-      gitlab-ctl reconfigure
-      creates=/var/opt/gitlab/bootstrapped
-    notify: start_gitlab
+      become: yes
+      become_user: root
+      become_method: sudo
+      command: >
+        gitlab-ctl reconfigure
+        creates=/var/opt/gitlab/bootstrapped
+      notify: start_gitlab
 
   - name: Open Firewall Ports 
     become: yes
