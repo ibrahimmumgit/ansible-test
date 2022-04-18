@@ -17,4 +17,9 @@ gitlab_dependencies:
   - tzdata
   - perl
   #policycoreutils-python
+gitlab_download_validate_certs: true
+
+
+
+
 
