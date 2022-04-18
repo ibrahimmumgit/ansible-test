@@ -19,7 +19,7 @@ gitlab_dependencies:
   #policycoreutils-python
 gitlab_download_validate_certs: true
 gitlab_backup_script_template: "backup.sh.j2"
-
+gitlab_restart_handler_failed_when: 'gitlab_restart.rc != 0'
 
 
 
