@@ -16,5 +16,5 @@ gitlab_dependencies:
   - openssl
   - tzdata
   - perl
-  - policycoreutils-python
+  #policycoreutils-python
 
