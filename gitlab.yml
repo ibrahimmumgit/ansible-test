@@ -1,5 +1,5 @@
 ---
-# tasks file for gitlab-centos
+# tasks file for Ubuntu
 - hosts: all
   gather_facts: yes
   become: yes
