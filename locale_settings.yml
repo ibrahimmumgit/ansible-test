@@ -1,0 +1,27 @@
+---
+- name: Setup Gitlab Server
+  hosts: all
+  become: yes
+  gather_facts: yes
+  vars_files:
+    - vars/main.yml
+  tasks:
+    - name: Generate the selected locales
+      locale_gen:
+        name: "{{ item }}"
+        state: present
+      with_items: "{{ locales_generated }}"
+      notify: "rebuild locales database"
+      when: ansible_os_family == "Debian"
+    
+    - name: Set the default locale
+      ansible.builtin.lineinfile:
+        dest: /etc/default/locale
+        regexp: "^LANG="
+        line: "LANG={{ locale }}"
+      notify: "rebuild locales database"
+      when: ansible_os_family == "Debian"
+  handlers:      
+    - name: "rebuild locales database"
+      ansible.builtin.command: dpkg-reconfigure -f noninteractive locales
+      when: ansible_os_family == "Debian"
