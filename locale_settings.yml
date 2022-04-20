@@ -4,7 +4,7 @@
   become: yes
   gather_facts: yes
   vars_files:
-    - vars/main.yml
+    - local-vars/main.yml
   tasks:
     - name: Generate the selected locales
       locale_gen:
