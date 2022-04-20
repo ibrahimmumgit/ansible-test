@@ -1,0 +1,5 @@
+# default locale
+locale: "en_US.UTF-8"
+
+locales_generated:
+  - "en_US.UTF-8"
