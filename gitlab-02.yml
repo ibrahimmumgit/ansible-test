@@ -1,0 +1,69 @@
+---
+# tasks file for Ubuntu
+- hosts: all
+  gather_facts: yes
+  become: yes
+  become_user: root
+  become_method: sudo
+  tasks:
+  - name: Install pre-reqs
+    apt:
+     state: present
+     name:
+      - curl 
+      - wget 
+      - openssh-server
+      - ca-certificates
+      - tzdata
+      - perl
+      - postfix
+  - name: Download GitLab repository installation script
+    get_url:
+        url: https://packages.gitlab.com/install/repositories/gitlab/gitlab-ee/script.deb.sh
+        dest: /tmp/gitlab_install_repository.sh
+  - name: Install GitLab repository.
+    command: bash /tmp/gitlab_install_repository.sh
+  - name: Install GitLab
+    package:
+        name: gitlab-ee
+        state: present
+  - name: daemon-reload to pick up config changes
+    ansible.builtin.systemd:
+      daemon_reload: yes
+    - name: Reconfigure GitLab (first run).
+      command: >
+        gitlab-ctl reconfigure
+        creates=/var/opt/gitlab/bootstrapped
+      failed_when: false
+   
+  - name: configure gitlab_url
+    lineinfile:
+        dest: /etc/gitlab/gitlab.rb
+        regexp: '^external'
+        line: 'external_url "https://{{ ansible_default_ipv4.address }}"'
+    notify: Restart Gitlab
+  - name: Open port 80 & 443 for http & https access
+    firewalld:
+        service: "{{ item }}"
+        permanent: true
+        state: enabled
+    loop:
+        - https
+        - http
+
+  - name: sshd Service enabled and running
+    service:
+      name: sshd
+      enabled: true
+      state: started
+
+  - name: Restart the firewalld service to load in the firewall changes
+    service: 
+      name: firewalld 
+      state: restarted
+
+  - name: Reconfigure the Gitlab
+    shell: gitlab-ctl reconfigure
+    when: ansible_os_family == 'Debian' 
+    #when: not gitlab_file.stat.exists 
+    failed_when: false
