@@ -2,6 +2,7 @@
 - name: Setup Gitlab Server
   hosts: all
   become: yes
+  become_user: root
   gather_facts: yes
   vars:
     lang_present: false
