@@ -1,5 +1,5 @@
 # General Configuration
-gitlab_passwd: "test12345"
+gitlab_passwd: "Hpeglcloud2022"
 gitlab_git_data_dir: "/var/opt/gitlab/git-data"
 gitlab_edition: "gitlab-ce"
 gitlab_version: ''
