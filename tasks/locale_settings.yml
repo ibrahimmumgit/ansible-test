@@ -40,5 +40,5 @@
     port: 22
     state: started
     delay: 15
-    timeout: 300
+    timeout: 400
 
