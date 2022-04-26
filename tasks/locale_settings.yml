@@ -1,0 +1,44 @@
+---
+- name: check LANG setting after update
+  shell: env | grep LANG
+  register: lang
+
+- name: Generate the selected locales
+  locale_gen:
+    name: "{{ item }}"
+    state: present
+  with_items: "{{ locales_generated }}"
+  notify: "rebuild locales database"
+  when: ansible_os_family == "Debian"
+
+- name: Set the default locale
+  ansible.builtin.lineinfile:
+    dest: /etc/default/locale
+    regexp: "^LANG="
+    line: "LANG={{ locale }}"
+  #notify: "rebuild locales database"
+  when: ansible_os_family == "Debian"
+  
+- name: "rebuild locales database"
+  ansible.builtin.command: dpkg-reconfigure -f noninteractive locales
+  when: ansible_os_family == "Debian"
+  
+- name: Restart the system
+  become: true
+  shell: sleep 2 && shutdown -r now "Ansbile requested system reboot"
+  async: 1
+  poll: 0
+  ignore_errors: true
+
+- name: Wait for system to boot
+  become: false
+  vars:
+    ansible_connection: local
+  local_action: wait_for
+  args:
+    host: "{{ inventory_hostname }}"
+    port: 22
+    state: started
+    delay: 15
+    timeout: 300
+
