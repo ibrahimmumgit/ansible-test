@@ -20,7 +20,7 @@
   when: ansible_os_family == "Debian"
   
 - name: "rebuild locales database"
-  shell: dpkg-reconfigure -f noninteractive locales
+  command: dpkg-reconfigure -f noninteractive locales
   when: ansible_os_family == "Debian"
   
 - name: Restart the system
