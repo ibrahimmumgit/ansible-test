@@ -6,7 +6,7 @@
   vars:
     lang_present: false
   vars_files:
-    - vars/main.yml
+    - vars-default/main.yml
   tasks:
     - name: Include OS-specific variables.
       include_vars: "vars/{{ ansible_os_family }}.yml"
