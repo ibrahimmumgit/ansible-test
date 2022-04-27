@@ -68,7 +68,7 @@
    
     - name: Generate backup script.
       template:
-        src: "templates/{{ gitlab_backup_script_template }}"
+        src: "templates-default/{{ gitlab_backup_script_template }}"
         dest: /root/backup.sh
         owner: root
         group: root
