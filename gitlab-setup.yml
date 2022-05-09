@@ -6,9 +6,9 @@
   vars_files:
     - vars/main.yml 
   tasks:
-    - name: check LANG setting after update
-      include_tasks: tasks/locale_settings.yml
-      when: ansible_os_family == "Debian"      
+#    - name: check LANG setting after update
+#      include_tasks: tasks/locale_settings.yml
+#      when: ansible_os_family == "Debian"      
     - name: Install Gitlab
       include_tasks: tasks/gitlab.yml
 
