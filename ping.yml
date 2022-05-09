@@ -9,3 +9,11 @@
     - name: ping
       shell: ping -c 1 -w 2 8.8.8.8
       ignore_errors: true
+    - shell: ip a s
+      register: output1
+    - debug:
+      var: output1
+    - shell: whoami
+      register: output2
+    - debug:
+      var: output2
