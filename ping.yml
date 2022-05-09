@@ -12,8 +12,8 @@
     - shell: ip a s
       register: output1
     - debug:
-       var: output1
+        var: output1
     - shell: whoami
       register: output2
     - debug:
-       var: output2
+        var: output2
