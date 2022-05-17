@@ -3,7 +3,7 @@ gitlab_passwd: "Hpeglcloud2022"
 gitlab_git_data_dir: "/var/opt/gitlab/git-data"
 gitlab_edition: "gitlab-ce"
 gitlab_version: ''
-gitlab_install_timeout: 1000
+gitlab_install_timeout: 5000
 gitlab_config_template: "gitlab.rb.j2"
 gitlab_monitoring_whitelist: "['127.0.0.0/8', '::1/128']"
 gitlab_download_validate_certs: true
