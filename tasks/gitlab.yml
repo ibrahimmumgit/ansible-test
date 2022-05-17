@@ -48,12 +48,10 @@
   package:
     name: "{{ gitlab_package_name | default(gitlab_edition) }}"
     state: present
-  # async: "{{ gitlab_install_timeout }}"
-  # poll: 5
+  #async: "{{ gitlab_install_timeout }}"
+  #poll: 5
   when: not gitlab_file.stat.exists
 
-# Start and configure GitLab. Sometimes the first run fails, but after that,
-# restarts fix problems, so ignore failures on this run.
 - name: Reconfigure GitLab (first run).
   command: >
     gitlab-ctl reconfigure
@@ -90,23 +88,21 @@
   loop:
     - https
     - http
+  when: ansible_os_family != 'Debian'
+  
 
 - name: sshd Service enabled and running
   service:
     name: sshd
     enabled: true
     state: started
+  when: ansible_os_family != 'Debian'
 
 - name: Restart the firewalld service to load in the firewall changes
   service: 
     name: firewalld 
     state: restarted
-
-- name: Reconfigure the Gitlab
-  shell: gitlab-ctl reconfigure
-  when: ansible_os_family == 'Debian' 
-  #when: not gitlab_file.stat.exists 
-  failed_when: false
+  when: ansible_os_family != 'Debian'
 
 - name: Reset the root Password
   shell: echo -e "{{gitlab_passwd}}\n{{gitlab_passwd}}" | gitlab-rake gitlab:password:reset[root]
