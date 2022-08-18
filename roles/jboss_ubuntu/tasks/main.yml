@@ -1,0 +1,76 @@
+- name: Create JBoss user
+  user:
+    name: jboss
+    shell: /bin/bash
+    comment: "JBoss Server User"
+    
+- name: Create jboss share directory
+  ansible.builtin.file:
+    path: /usr/local/share/jboss
+    state: directory 
+    owner: jboss 
+    group: jboss
+
+- name: Check if current version is installed
+  stat: path="/usr/local/share/jboss/{{ jboss_version_long }}"
+  register: check_current_version
+     
+- name: Create JBoss home directory
+  file: 
+    path: "/usr/local/share/jboss" 
+    state: directory 
+    owner: jboss 
+    group: jboss
+  when: not check_current_version.stat.exists
+  
+- name: Get JBoss
+  get_url: 
+    url: "{{jboss_url}}" 
+    dest: "{{ ansible_env.HOME }}/{{ jboss_name_complete }}.tar.gz"
+  when: not check_current_version.stat.exists
+
+- name: Unarchive JBoss
+  command: /bin/tar zxvf {{jboss_name_complete}}.tar.gz chdir={{ansible_env.HOME}} creates={{ansible_env.HOME}}/{{jboss_name_complete}}
+  when: not check_current_version.stat.exists
+
+- name: Move JBoss to final location
+  command: 
+    cmd: /bin/mv -f {{ ansible_env.HOME }}/{{ jboss_name_complete}} /usr/local/share/jboss/{{jboss_version_long}} 
+    creates: /usr/local/share/jboss/{{jboss_version_long}}
+  register: move_jboss
+  when: not check_current_version.stat.exists
+
+- name: Update JBoss home directory so jboss user owns file
+  file: 
+    path: "/usr/local/share/jboss/{{ jboss_version_long }}" 
+    state: directory 
+    owner: jboss 
+    group: jboss 
+    recurse: yes
+  when: not check_current_version.stat.exists
+
+- name: Update current JBoss sym-link
+  file: 
+    src: "/usr/local/share/jboss/{{ jboss_version_long }}" 
+    dest: /usr/local/share/jboss/current 
+    owner: jboss 
+    group: jboss 
+    state: link
+  notify: Restart JBoss
+  when: not check_current_version.stat.exists
+
+- name: Upload JBoss service script
+  copy: 
+    src: "jboss.init.d" 
+    dest: "/etc/init.d/jboss" 
+    owner: root 
+    group: root 
+    mode: 0755
+  notify: Restart JBoss
+  when: not check_current_version.stat.exists
+
+- name: Remove JBoss download
+  file: 
+    path: "{{ ansible_env.HOME }}/{{ jboss_name_complete }}.tar.gz" 
+    state: absent
+  when: not check_current_version.stat.exists

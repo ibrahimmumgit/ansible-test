@@ -1,0 +1,11 @@
+---
+jboss_version_major: "7"
+jboss_version_minor: ".1"
+jboss_version_point: ".1"
+jboss_version_stage: ".Final"
+
+jboss_version_short: "{{jboss_version_major}}{{jboss_version_minor}}"
+jboss_version_long: "{{jboss_version_short}}{{jboss_version_point}}"
+jboss_version_complete: "{{jboss_version_long}}{{jboss_version_stage}}"
+jboss_name_complete: "jboss-as-{{jboss_version_complete}}"
+jboss_url: "http://download.jboss.org/jbossas/{{jboss_version_short}}/{{jboss_name_complete}}/{{jboss_name_complete}}.tar.gz"
